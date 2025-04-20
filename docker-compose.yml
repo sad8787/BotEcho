@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  telegram-bot:
+    image: sadiel5/telegram-bot:latest
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - botnet
+    ports:
+      - "5000:5000"  # Asegúrate de que el puerto esté expuesto si es necesario
+
+networks:
+  botnet:
+    driver: overlay  # Cambié "overla" por "overlay", que es el controlador de red adecuado en Docker Swarm
