@@ -1,6 +1,9 @@
 #@SadielBotbot:
 # Reemplaza esto con tu propio token
 TOKEN = "5459892481:AAFdl1xAQKVylQ-1RPjQjJqakNNCBPTroDo"
+#@PrototypeSalesMPro100robot:
+
+#TOKEN = "2066976010:AAGW71YiXVE1qdygauqP9_YfuEBFsH2aofg"
 
 from telegram import Update
 from telegram.ext import (
@@ -17,9 +20,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("?Hola! Soy un bot de eco. M?ndame un mensaje y lo repetir?.")
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    message_text = update.message.text or ""
-    texto_invertido = message_text[::-1]
-    await update.message.reply_text(texto_invertido)
+    message_text = update.message.text or ""    
+    await update.message.reply_text(message_text + " sadiel")
     
     
 
