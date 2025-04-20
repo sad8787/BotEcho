@@ -18,8 +18,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_text = update.message.text or ""
-    print(message_text)
-    await update.message.reply_text(message_text)
+    texto_invertido = message_text[::-1]
+    await update.message.reply_text(texto_invertido)
     
     
 
