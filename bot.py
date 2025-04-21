@@ -56,6 +56,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("¡Hola! Soy un bot de eco. Mándame un mensaje y lo repetiré.")
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+<<<<<<< Updated upstream
     message_text = update.message.text or "" 
     if message_text:  # Si hay texto en el mensaje 
         message_text=message_text.lower()
@@ -68,6 +69,10 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(generated_text)
     else:        
         await update.message.reply_text(f''' Hola  debes escribir algo como, Había una vez un dragón que ''')
+=======
+    message_text = update.message.text or ""    
+    await update.message.reply_text(message_text + " sadiel godales")
+>>>>>>> Stashed changes
     
     
 
