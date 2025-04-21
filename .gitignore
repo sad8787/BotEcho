@@ -1,1 +1,10 @@
-.env
+.venv/
+.venv311/
+venv/
+venv311/
+.venv
+.venv311
+.vscode/
+.idea/
+.vs
+.vs/
