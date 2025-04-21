@@ -52,12 +52,14 @@ def generate_text(prompt: str, max_length: int = 50):
 print("2")
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):   
-    await update.message.reply_text("¡Hola! Soy un bot de eco. Mándame un mensaje y lo repetiré.")
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE): 
+    if update.message:
+        await update.message.reply_text("¡Hola! Soy un bot de eco. Mándame un mensaje y lo repetiré.")
+    
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    message_text = update.message.text or "" 
-    if message_text:  # Si hay texto en el mensaje 
+    if update.message and update.message.text:
+        message_text = update.message.text or ""     
         message_text=message_text.lower()
         if "había una vez" not in message_text:
             message_text = "Había una vez " + message_text
@@ -65,9 +67,15 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         generated_text = generate_text(message_text,100)
         print(generated_text)
         #reverso = message_text[::-1] 
-        await update.message.reply_text(generated_text)
-    else:        
-        await update.message.reply_text(f''' Hola  debes escribir algo como, Había una vez un dragón que ''')
+        try:
+            await update.message.reply_text(generated_text)
+        except Exception as e:
+            print(f"Error al enviar el mensaje: {e}")
+            await update.message.reply_text("Lo siento, no puedo enviar el mensaje en este momento. Intenta de nuevo más tarde.")
+    else:
+        if update.message:
+            await update.message.reply_text("¡Hola! Soy un bot de eco. Mándame un mensaje y lo repetiré.")
+        
     
     
 
