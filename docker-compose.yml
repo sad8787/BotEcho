@@ -4,7 +4,7 @@ services:
   telegram-bot:
     image: sadiel5/telegram-bot:latest
     deploy:
-      replicas: 3
+      replicas: 1
       restart_policy:
         condition: on-failure
     networks:
