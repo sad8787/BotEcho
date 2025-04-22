@@ -18,8 +18,10 @@ print("0")
 from transformers import GPTNeoForCausalLM, AutoTokenizer
 import torch
 print("1")
-tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-1.3B")
-model = GPTNeoForCausalLM.from_pretrained("EleutherAI/gpt-neo-1.3B")
+#tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-1.3B")
+tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
+#model = GPTNeoForCausalLM.from_pretrained("EleutherAI/gpt-neo-1.3B", from_flax=True)
+model = GPTNeoForCausalLM.from_pretrained("EleutherAI/gpt-neo-125M")
 
 def generate_text(prompt: str, max_length: int = 50):
     """
