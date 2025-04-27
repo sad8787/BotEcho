@@ -20,3 +20,4 @@ nobot
 .botenv
 botenv
 botenv/
+keys.py
