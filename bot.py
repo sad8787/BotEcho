@@ -1,7 +1,8 @@
-﻿from asyncio.windows_events import NULL
-from email.message import Message
+﻿from email.message import Message
 import json
 import asyncio
+import platform
+NULL = None # Usar None consistentemente
 import os
 import platform
 from pickle import NONE, TRUE
@@ -22,48 +23,45 @@ import keys
 
 ##IA
 import transformers
-#from transformers.models.gpt_neo.modeling_gpt_neo import GPTNeoForCausalLM
-#from transformers.models.gpt2.tokenization_gpt2 import GPT2Tokenizer
 from transformers.pipelines import pipeline
 import torch
 
 ##SO
 # Detectar sistema operativo
 if platform.system() == "Windows":
-    base_path = "C:/fotosTelegramECHOBOT"
+    base_path = os.path.join("C:", "fotosTelegramECHOBOT")
 else:
-    base_path = "c/fotosTelegramECHOBOT"
+    base_path = os.path.join("c", "fotosTelegramECHOBOT")
 # Crear carpeta base si no existe
 os.makedirs(base_path, exist_ok=True)
 
 
 # Create the Application and pass it your bot's token.
 application = Application.builder().token(keys.token).build()
-#generator_en = pipeline("text-generation", model="gpt2", tokenizer="gpt2", truncation=True)
 generator_es = pipeline(
-        "text-generation",
-        model="datificate/gpt2-small-spanish",
-        tokenizer="datificate/gpt2-small-spanish",
-        pad_token_id=50256,
-        truncation=True
-    )
+    "text-generation",
+    model="datificate/gpt2-small-spanish",
+    tokenizer="datificate/gpt2-small-spanish",
+    pad_token_id=50256,
+    truncation=True
+)
 def text_generator(text: str, max_length: int = 100, idioma: str = "es"):
-     try:
-        resultado = generator_es(text, max_length=max_length)    
+    try:
+        resultado = generator_es(text, max_length=max_length)
         if isinstance(resultado, list) and 'generated_text' in resultado[0]:
             return resultado[0]['generated_text']
         else:
             return "No te entiendo"
-     except Exception as e:
+    except Exception as e:
         print( f"Error: {str(e)}")
         return f"No te entiendo"
 
 
 
 # Bot commands
-async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:    
+async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update.message and update.message.text:
-        text_base = update.message.text        
+        text_base = update.message.text
         print(text_base)
         text=text_generator(text_base,200) or "No se pudo generar texto"
         print(text)
@@ -84,7 +82,7 @@ async def save_photo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         if user_id is None:
             await update.message.reply_text("No se pudo identificar al usuario.")
             return
-        
+
         user_folder = os.path.join(base_path, user_id)
         os.makedirs(user_folder, exist_ok=True)
 
@@ -92,7 +90,7 @@ async def save_photo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         asyncio.create_task(limpiar_fotos_antiguas(user_folder))
 
         if update.message.photo:
-            photo = update.message.photo[-1]  # Foto de mayor resolución
+            photo = update.message.photo[-1] # Foto de mayor resolución
             file = await context.bot.get_file(photo.file_id)
 
             # Crear nombre basado en fecha y hora
@@ -182,9 +180,9 @@ async def limpiar_fotos_antiguas(user_folder: str):
         print(f"[ERROR] Al eliminar foto antigua: {str(e)}")
 
 # Run the program
-if __name__ == '__main__':      
-    # Commands    
-    application.add_handler(MessageHandler( filters.TEXT  & ~filters.COMMAND ,echo))   
+if __name__ == '__main__':
+    # Commands
+    application.add_handler(MessageHandler( filters.TEXT  & ~filters.COMMAND ,echo))
     application.add_handler(MessageHandler(filters.PHOTO, save_photo))
     application.add_handler(CommandHandler("ultimasfotos", ultimas_fotos))
     application.add_handler(CommandHandler("start", start))
