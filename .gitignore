@@ -14,7 +14,7 @@ venv1/
 env
 env/
 nobot.py
-key.py
+keys.py
 nobot
 /botenv
 .botenv
